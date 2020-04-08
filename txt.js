@@ -48,6 +48,11 @@ var $dlgFont = (function() {
     function sample() {
         exampletxt.css({ 'font-family': cfg.family, 'font-size': cfg.size + 'pt' });
 
+        if(cfg.style === '常规') {
+            exampletxt.css({'font-style': 'normal'});
+            return;
+        }
+
         if (cfg.style === '斜体') {
             exampletxt.css({ 'font-style': 'italic' });
             return;
