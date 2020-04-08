@@ -33,49 +33,67 @@ var $dlgFont = (function() {
         '</div>' +
         '</div>');
 
-    var $btnOk = fontlg.find('.btn-ok'),
-            $btnClose = fontlg.find('.close-btn'),
-            $btnCancel = fontlg.find('.btn-cancel'),
-            $sample = fontlg.find('.sample-txt'),
-            $titleBar = fontlg.find('.notepad-dlg-titlebar');
-
-    var fonts = ['Agency FB', 'Algerian', 'Arial', 'Arial Rounded MT', 'Axure Handwriting', 'Bahnschrift', 'Baskerville Old Face', 'Bauhaus 93', 'Bell MT', 'Berlin Sans FB', 'Bernard MT', 'BlackAdder ITC'],
-            styles = ['常规', '斜体', '粗体', '粗偏斜体'],
-            sizes = ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '26', '28', '36', '48', '72'];
     var cfg = {
         family: 'Arial',
         style: '常规',
         size: '16',
         okHandler: null
     };
+    var btnOk = fontlg.find('.btn-ok'),
+            btnClose = fontlg.find('.close-btn'),
+            btnCancel = fontlg.find('.btn-cancel'),
+            exampletxt = fontlg.find('.sample-txt'),
+            titleBar = fontlg.find('.notepad-dlg-titlebar');
 
     function sample() {
-        $sample.css({ 'font-family': cfg.family, 'font-size': cfg.size + 'pt' });
+        exampletxt.css({ 'font-family': cfg.family, 'font-size': cfg.size + 'pt' });
 
         if (cfg.style === '斜体') {
-            $sample.css({ 'font-style': 'italic' });
+            exampletxt.css({ 'font-style': 'italic' });
             return;
         }
 
         if (cfg.style === '粗体') {
-            $sample.css({ 'font-weight': 'bold' });
+            exampletxt.css({ 'font-weight': 'bold' });
             return;
         }
 
         if (cfg.style === '粗偏斜体') {
-            $sample.css({ 'font-weight': 'bold', 'font-style': 'italic' });
+            exampletxt.css({ 'font-weight': 'bold', 'font-style': 'italic' });
             return;
         }
     }
 
+    function destory() { fontlg.remove(); }
+
+    function show(conf) {
+        $.extend(cfg, conf);
+
+        $('body').append(fontlg);
+        init();
+        fontlg.find('.dialogbox').draggable({ handle: titleBar });
+
+        btnClose.click(destory);
+        btnCancel.click(destory);
+        btnOk.click(function() {
+            cfg.okHandler({
+                family: cfg.family,
+                style: cfg.style,
+                size: cfg.size
+            });
+
+            destory();
+        });
+    }
+
     function init() {
-        // var fonts = ['Agency FB', 'Algerian', 'Arial', 'Arial Rounded MT', 'Axure Handwriting', 'Bahnschrift', 'Baskerville Old Face', 'Bauhaus 93', 'Bell MT', 'Berlin Sans FB', 'Bernard MT', 'BlackAdder ITC'],
-        //     styles = ['常规', '斜体', '粗体', '粗偏斜体'],
-        //     sizes = ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '26', '28', '36', '48', '72'];
+        var fonts = ['Agency FB', 'Algerian', 'Arial', 'Arial Rounded MT', 'Axure Handwriting', 'Bahnschrift', 'Baskerville Old Face', 'Bauhaus 93', 'Bell MT', 'Berlin Sans FB', 'Bernard MT', 'BlackAdder ITC'],
+                styles = ['常规', '斜体', '粗体', '粗偏斜体'],
+                sizes = ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '26', '28', '36', '48', '72'];
 
         console.log(',,,,,,,');
-        var l1 = new fontList();
-        l1.show({
+        var family = new fontList();
+        family.show({
             container: '.notepad-dlg-font .font-family',
             width: '176px',
             list: fonts,
@@ -88,10 +106,9 @@ var $dlgFont = (function() {
             }
         });
 
-        var l2 = new fontList();
-        l2.show({
+        var fstyle = new fontList();
+        fstyle.show({
             container: '.notepad-dlg-font .font-style',
-            // select: 3,
             width: '132px',
             list: styles,
             select: styles.indexOf(cfg.style),
@@ -103,42 +120,22 @@ var $dlgFont = (function() {
             }
         });
 
-        var l3 = new fontList();
-        l3.show({
+        var fsize = new fontList();
+        fsize.show({
             container: '.notepad-dlg-font .font-size',
             width: '64px',
             list: sizes,
             select: sizes.indexOf(cfg.size),
             selectHandler: function(e) {
                 console.log(sizes[e]);
-                // $editor.changetype();
                 cfg.size = sizes[e];
                 sample();
             }
         });
     }
 
-    function destory() { fontlg.remove(); }
 
-    function show(conf) {
-        $.extend(cfg, conf);
-
-        $('body').append(fontlg);
-        init();
-        fontlg.find('.dialogbox').draggable({ handle: $titleBar });
-
-        $btnClose.click(destory);
-        $btnCancel.click(destory);
-        $btnOk.click(function() {
-            cfg.okHandler({
-                family: cfg.family,
-                style: cfg.style,
-                size: cfg.size
-            });
-
-            destory();
-        });
-    }
+    
 
     fontlg.click(function(e) {
         e.stopPropagation();

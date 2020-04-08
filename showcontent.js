@@ -5,41 +5,13 @@ var showContent = (function () {
         + '<div class="notepad-editor">'
         + '<textarea spellcheck="false"></textarea>'
         + '</div>');
-
-    var txtarea = contentbox.find('textarea');
-
     var cfg = {
         wrap: false
     };
     var bSelect = false;
+    var txtarea = contentbox.find('textarea');
+
     console.log('显示。。。');
-
-    function resize(isBig) {
-        if (isBig) {
-            contentbox.css({ bottom: '21px' });
-        } else {
-            contentbox.css({ bottom: '0' });
-        }
-    }
-    function focus() {
-        txtarea.focus();
-    }
-
-    txtarea.mousedown(function () { bSelect = true; });
-
-    txtarea.mouseup(function () { bSelect = false; });
-
-
-
-    function setWrap(bWrap) {
-        if (bWrap) {
-            txtarea.attr('wrap', 'soft');
-            txtarea.css({ 'overflow-x': 'hidden' });
-        } else {
-            txtarea.attr('wrap', 'off');
-            txtarea.css({ 'overflow-x': 'scroll' });
-        }
-    }
 
     function setFont(e) {
         txtarea.css({ 'font-family': e.family, 'font-size': e.size + 'pt' });
@@ -60,6 +32,29 @@ var showContent = (function () {
         }
     }
 
+    function setWrap(bWrap) {
+        if (bWrap) {
+            txtarea.attr('wrap', 'soft');
+            txtarea.css({ 'overflow-x': 'hidden' });
+        } else {
+            txtarea.attr('wrap', 'off');
+            txtarea.css({ 'overflow-x': 'scroll' });
+        }
+    }
+
+    function resize(isBig) {
+        if (isBig) {
+            contentbox.css({ bottom: '21px' });
+        } else {
+            contentbox.css({ bottom: '0' });
+        }
+    }
+    function focus() {
+        txtarea.focus();
+    }
+
+    
+
 
     function show(conf) {
         $.extend(cfg, conf);
@@ -69,19 +64,15 @@ var showContent = (function () {
         setWrap(cfg.wrap);
     }
 
-    // function show() {
-    //   $('body').append(contentbox);
-    //   txtarea.trigger('focus');
-    // }
 
-    // return {show: show, resize: resize};
+    txtarea.mousedown(function () { bSelect = true; });
+
+    txtarea.mouseup(function () { bSelect = false; });
+
     return {
         show: show,
         resize: resize,
         focus: focus,
-        // getTotalLn: getTotalLn,
-        // getRow: getRow,
-        // getCol: getCol,
         setWrap: setWrap,
         setFont: setFont
     };

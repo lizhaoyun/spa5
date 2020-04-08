@@ -1,7 +1,7 @@
 /*global $:true*/
 
 var $menubar = (function () {
-    var $bar = $('<div class="menubar"></div>');
+    var bar = $('<div class="menubar"></div>');
 
     var menuData;
     var menus = [];
@@ -11,7 +11,7 @@ var $menubar = (function () {
     console.log('dsfads');
 
     function showTitle() {
-        var $titlelist = $('<ul class="note-title"></ul>');
+        var titlelist = $('<ul class="note-title"></ul>');
         for (var i = 0; i < menuData.length; i++) {
             console.log(menuData[i]['title']);
             var newli = $('<li class="title"></li>');
@@ -19,7 +19,7 @@ var $menubar = (function () {
             newli.html(menuData[i]['title']);
             newli.attr('data-id', i);
 
-            $titlelist.append(newli);
+            titlelist.append(newli);
 
             newli.click(function () {
                 var i = Number(this.dataset.id);
@@ -47,47 +47,47 @@ var $menubar = (function () {
                 }
             });
         }
-        $bar.append($titlelist);
-        $('.main').append($bar);
+        bar.append(titlelist);
+        $('.main').append(bar);
     }
 
     function showDetail() {
         for (var i = 0; i < menuData.length; i++) {
-            var $detailbox = $('<ul class="details"></ul>');
+            var detailbox = $('<ul class="details"></ul>');
             var details = menuData[i]['menuItems'];
 
             for (var k = 0; k < details.length; k++) {
                 switch (details[k]['title']) {
                     case 'hr':
-                        var $newhr = $('<li class="menuhr"></li>');
-                        $detailbox.append($newhr);
+                        var newhr = $('<li class="menuhr"></li>');
+                        detailbox.append(newhr);
                         // console.log('new hr!!!');
                         break;
                     default:
-                        var $newli = $('<li class="menuitems"></li>');
-                        var $newspan = $('<span class="shortcut"></span>');
-                        $newli.html(details[k]['title']);
-                        $newspan.html(details[k]['shortcut']);
+                        var newli = $('<li class="menuitems"></li>');
+                        var newspan = $('<span class="shortcut"></span>');
+                        newli.html(details[k]['title']);
+                        newspan.html(details[k]['shortcut']);
 
-                        $newli.html(details[k].title);
-                        $newli.attr('data-x', i);
-                        $newli.attr('data-y', k);
+                        newli.html(details[k].title);
+                        newli.attr('data-x', i);
+                        newli.attr('data-y', k);
 
                         if (details[k]['shortcut'] !== '') {
                             var $shorcut = $('<span class="kjkey"></span>');
 
                             $shorcut.html(details[k]['shortcut']);
-                            $newli.append($shorcut);
+                            newli.append($shorcut);
                         }
 
                         if (!details[k].enabled)
-                            $newli.addClass('forbid');
+                            newli.addClass('forbid');
 
 
-                        $newli.append($newspan);
-                        $detailbox.append($newli);
+                        newli.append(newspan);
+                        detailbox.append(newli);
 
-                        $newli.click(function () {
+                        newli.click(function () {
                             if ($(this).hasClass('forbid'))
                                 return;
 
@@ -100,14 +100,14 @@ var $menubar = (function () {
                         });
                 }
             }
-            $detailbox.css({
+            detailbox.css({
                 width: menuData[i].width,
                 left: menuData[i].left,
                 display: 'none'
             });
 
-            $bar.append($detailbox);
-            menus.push($detailbox);
+            bar.append(detailbox);
+            menus.push(detailbox);
         }
     }
 
@@ -143,7 +143,7 @@ var $menubar = (function () {
         showTitle();
         showDetail();
 
-        $('body').append($bar);
+        $('body').append(bar);
     }
 
     function show(data) {
